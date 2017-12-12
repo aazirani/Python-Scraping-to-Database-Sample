@@ -56,3 +56,13 @@ CREATE TABLE `events` (
  CONSTRAINT `events_class_id_cascade` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ```
+4. Clone this repository into a folder
+5. Go to the just cloned folder and execute the script
+For Python 3:
+```
+python3 scraping_multiple_web_pages.py
+```
+For Python 2:
+```
+python2 scraping_multiple_web_pages.py
+```

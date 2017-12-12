@@ -1,3 +1,7 @@
+#A sample script to scrapedata from https://howpcrules.com/sample-page-for-web-scraping/ and saving it to a MySQL database. This tutorial was created for https://howpcrules.com/
+#The full tutorial is available at https://howpcrules.com/step-by-step-guide-on-scraping-data-from-a-website-and-saving-it-to-a-database/
+#Author: Amin Akbari, https://github.com/aminakbari/
+
 import requests
 import MySQLdb
 from bs4 import BeautifulSoup
