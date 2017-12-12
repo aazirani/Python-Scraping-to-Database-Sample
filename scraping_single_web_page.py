@@ -41,6 +41,7 @@ credit_points = basic_data_cells[10].text.strip()
 hyperlink = basic_data_cells[11].text.strip()
 language = basic_data_cells[12].text.strip()
 
+
 #Save class's base data to the database
 # Open database connection
 db = MySQLdb.connect(HOST, USERNAME, PASSWORD, DATABASE)
@@ -57,25 +58,24 @@ except:
     # Rollback in case there is any error
     db.rollback()
     #get the just inserted class id
-    sql = "SELECT LAST_INSERT_ID()"
-    try:
-        # Execute the SQL command
-        cursor.execute(sql)
-        # Get the result
-        result = cursor.fetchone()
-        # Set the class id to the just inserted class
-        class_id = result[0]
-    except:
-        # Rollback in case there is any error
-        db.rollback()
-        # disconnect from server
-        db.close()
-        # on error set the class_id to -1
-        class_id = -1
+sql = "SELECT LAST_INSERT_ID()"
+try:
+    # Execute the SQL command
+    cursor.execute(sql)
+    # Get the result
+    result = cursor.fetchone()
+    # Set the class id to the just inserted class
+    class_id = result[0]
+except:
+    # Rollback in case there is any error
+    db.rollback()
+    # disconnect from server
+    db.close()
+    # on error set the class_id to -1
+    class_id = -1
 
 #Get the tables where the dates are written.
 dates_tables = soup.find_all("table", {"summary": "Overview of all event dates"});
-
 #Iterate through the tables
 for table in dates_tables:
     #Iterate through the rows inside the table
@@ -101,3 +101,20 @@ for table in dates_tables:
             remarks = cells[7].text.strip()
             cancelled_on = cells[8].text.strip()
             max_participants = cells[9].text.strip()
+            #Save event data to database
+            # Open database connection
+            db = MySQLdb.connect(HOST, USERNAME, PASSWORD, DATABASE)
+            # prepare a cursor object using cursor() method
+            cursor = db.cursor()
+            # Prepare SQL query to INSERT a record into the database.
+            sql = "INSERT INTO events(class_id, start_date, end_date, day, start_time, end_time, frequency, room, lecturer_for_date, status, remarks, cancelled_on, max_participants, created_at) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {})".format(class_id, start_date, end_date, day, start_time, end_time, frequency, room, lecturer_for_date, status, remarks, cancelled_on, max_participants, 'NOW()')
+            try:
+               # Execute the SQL command
+               cursor.execute(sql)
+               # Commit your changes in the database
+               db.commit()
+            except:
+               # Rollback in case there is any error
+               db.rollback()
+            # disconnect from server
+            db.close()
