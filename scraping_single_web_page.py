@@ -40,3 +40,32 @@ lecture_id = basic_data_cells[9].text.strip()
 credit_points = basic_data_cells[10].text.strip()
 hyperlink = basic_data_cells[11].text.strip()
 language = basic_data_cells[12].text.strip()
+
+#Get the tables where the dates are written.
+dates_tables = soup.find_all("table", {"summary": "Overview of all event dates"});
+
+#Iterate through the tables
+for table in dates_tables:
+    #Iterate through the rows inside the table
+    for row in table.select("tr"):
+        #Get all cells inside the row
+        cells = row.findAll("td")
+        #check if there is at least one td cell inside this row
+        if(len(cells) > 0):
+            #get all the different data from the table's tds
+            #Split this cell into two different parts seperated by 'to' in order to have a start_date and an end_date.
+            duration = cells[0].text.split("to")
+            start_date = duration[0].strip()
+            end_date = duration[1].strip()
+            day = cells[1].text.strip()
+            #Split this cell into two different parts seperated by 'to' in order to have a start_time and an end_time.
+            time = cells[2].text.split("to")
+            start_time = time[0].strip()
+            end_time = time[1].strip()
+            frequency = cells[3].text.strip()
+            room = cells[4].text.strip()
+            lecturer_for_date = cells[5].text.strip()
+            status = cells[6].text.strip()
+            remarks = cells[7].text.strip()
+            cancelled_on = cells[8].text.strip()
+            max_participants = cells[9].text.strip()
