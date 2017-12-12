@@ -1,4 +1,4 @@
-# Python-Scraping-to-Database-Sample
+# Python Scraping Data from a Website and Saving it to a Database
 Some sample code examples in Python to scrape data from the web and saving it to a database.
 
 This repository is the fully implemented code of the tutorial "[Scraping Data from a Website and Saving it to a Database](https://howpcrules.com/scraping-data-from-a-website-and-saving-it-to-a-database/)" on [howpcrules.com](https://howpcrules.com/). For a more detailed tutorial please take a look at the blog post.
@@ -60,9 +60,9 @@ CREATE TABLE `events` (
 5. Go to the just cloned folder and execute the script
 For Python 3:
 ```
-python3 scraping_multiple_web_pages.py
+python3 scraping_single_web_page.py
 ```
 For Python 2:
 ```
-python2 scraping_multiple_web_pages.py
+python2 scraping_single_web_page.py
 ```
