@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 
 #SQL connection data to connect and save the data in
 HOST = "localhost"
-USERNAME = "scraping_sample_user"
+USERNAME = "scraping_user"
 PASSWORD = ""
-DATABASE = "scraping_sample_user"
+DATABASE = "scraping_sample"
 
 #URL to be scraped
 url_to_scrape = 'https://howpcrules.com/sample-page-for-web-scraping/'
@@ -40,6 +40,38 @@ lecture_id = basic_data_cells[9].text.strip()
 credit_points = basic_data_cells[10].text.strip()
 hyperlink = basic_data_cells[11].text.strip()
 language = basic_data_cells[12].text.strip()
+
+#Save class's base data to the database
+# Open database connection
+db = MySQLdb.connect(HOST, USERNAME, PASSWORD, DATABASE)
+# prepare a cursor object using cursor() method
+cursor = db.cursor()
+# Prepare SQL query to INSERT a record into the database.
+sql = "INSERT INTO classes(name_of_class, type_of_course, lecturer, number, short_text, choice_term, hours_per_week_in_term, expected_num_of_participants, maximum_participants, assignment, lecture_id, credit_points, hyperlink, language, created_at) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {})".format(name_of_class, type_of_course, lecturer, number, short_text, choice_term, hours_per_week_in_term, expected_num_of_participants, maximum_participants, assignment, lecture_id, credit_points, hyperlink, language, 'NOW()')
+try:
+    # Execute the SQL command
+    cursor.execute(sql)
+    # Commit your changes in the database
+    db.commit()
+except:
+    # Rollback in case there is any error
+    db.rollback()
+    #get the just inserted class id
+    sql = "SELECT LAST_INSERT_ID()"
+    try:
+        # Execute the SQL command
+        cursor.execute(sql)
+        # Get the result
+        result = cursor.fetchone()
+        # Set the class id to the just inserted class
+        class_id = result[0]
+    except:
+        # Rollback in case there is any error
+        db.rollback()
+        # disconnect from server
+        db.close()
+        # on error set the class_id to -1
+        class_id = -1
 
 #Get the tables where the dates are written.
 dates_tables = soup.find_all("table", {"summary": "Overview of all event dates"});
